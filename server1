@@ -1,0 +1,228 @@
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+public class Server {
+    public static boolean check(String x , int y ){
+
+        for (int i = 0; i < y; i++){
+
+            if (!Character.isDigit((x.charAt(i)))) {
+                return false;
+            }
+        }
+        // If we reach here, that means
+        // all characters were digits.
+        return true;
+        }
+    public static boolean check1(String w , String z){
+
+            if (w.isEmpty() || z.isEmpty()) {
+                return false;
+            }
+
+        // If we reach here, that means
+        // all characters are exists for both side.
+        return true;
+
+
+    }
+
+    public static int toplam1(int num1, int num2){
+
+        return num1 + num2;
+    }
+    public static int toplam2(int num3, int num4){
+
+        return num3 - num4;
+    }
+    public static int toplam3(int num5, int num6){
+
+        return num5 * num6;
+    }
+    public static int toplam4(int num7, int num8){
+
+        return num7 / num8;
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Waiting for Clients");
+        ServerSocket ss = new ServerSocket(7489);
+        Socket soc = ss.accept();
+        System.out.println("Connection is established.");
+        BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+
+        String str = null;
+        while( (str = in.readLine()) != null ) {
+            int total_result;
+            DataOutputStream dos = new DataOutputStream(soc.getOutputStream());
+            PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+
+
+            try {
+                if (str.contains("+")) {
+                    int a = str.indexOf("+");
+
+                    String first = str.substring(0, a);
+                    int len = first.length();
+
+                    String second = str.substring(a + 1);
+                    int len1 = second.length();
+
+                    System.out.println("burda1");
+
+                    if(check1(first,second)){
+                        System.out.println("burda2");
+                    }
+                    else {
+                        out.println("ERROR: Please fill the blank!");
+                        System.out.println("burda3");
+                        continue;
+                    }
+
+
+                    if (check(first,len) && check(second,len1)) {
+                  //      out.println("congratulation");
+
+                        dos.writeUTF("Operation is successful -- ");
+                        System.out.println("burda4");
+
+                    }
+                    else {
+                        out.println("ERROR: Please do not press whitespace between!");
+                        System.out.println("burda5");
+                        continue;
+                    }
+
+                    int num1 = Integer.parseInt(first);
+                    // System.out.println(num1);
+                    int num2 = Integer.parseInt(second);
+                    // System.out.println(num2);
+
+                    total_result = toplam1(num1, num2);
+
+                    out.println("Server's Answer:" + total_result);
+                    System.out.println("burda6");
+                }
+                else if (str.contains("-")) {
+                    int b = str.indexOf("-");
+
+                    String first = str.substring(0, b);
+                    int len = first.length();
+
+                    String second = str.substring(b + 1);
+                    int len1 = second.length();
+
+                    if(check1(first,second)){
+                        dos.writeUTF("");
+                    }
+                    else {
+                        out.println("ERROR: Please fill the blank!");
+                        continue;
+                    }
+
+                    if (check(first, len) && check(second, len1)) {
+
+                        dos.writeUTF("Operation is successful -- ");
+                    }
+                    else {
+
+                        out.println("ERROR: Please do not press whitespace between!");
+                        continue;
+                    }
+                    int num3 = Integer.parseInt(first);
+                    //System.out.println(num3);
+                    int num4 = Integer.parseInt(second);
+                    //System.out.println(num4);
+                    total_result = toplam2(num3, num4);
+          //          PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+                    out.println("Server:" + total_result);
+                }
+                else if (str.contains("*")) {
+                    int c = str.indexOf("*");
+
+                    String first = str.substring(0, c);
+                    int len = first.length();
+
+                    String second = str.substring(c + 1);
+                    int len1 = second.length();
+
+                    if(check1(first,second)){
+                        dos.writeUTF("");
+                    }
+                    else {
+                        out.println("ERROR: Please fill the blank!");
+                        continue;
+                    }
+
+                    if (check(first, len) && check(second, len1)) {
+
+                        dos.writeUTF("Operation is successful -- ");
+                    }
+                    else {
+
+                        out.println("ERROR: Please do not press whitespace between!");
+                        continue;
+                    }
+                    int num5 = Integer.parseInt(first);
+                    //System.out.println(num5);
+                    int num6 = Integer.parseInt(second);
+                    //System.out.println(num6);
+                    total_result = toplam3(num5, num6);
+          //          PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+                    out.println("Server:" + total_result);
+                }
+                else if (str.contains("/")) {
+                    int d = str.indexOf("/");
+
+                    String first = str.substring(0, d);
+                    int len = first.length();
+
+                    String second = str.substring(d + 1);
+                    int len1 = second.length();
+
+                    if(check1(first,second)){
+                        dos.writeUTF("");
+                    }
+                    else {
+                        out.println("ERROR: Please fill the blank!");
+                        continue;
+                    }
+
+                    if (check(first, len) && check(second, len1)) {
+
+                        dos.writeUTF("Operation is successful -- ");
+                    }
+                    else {
+
+                        out.println("ERROR: Please do not press whitespace between!");
+                        continue;
+                    }
+                    int num7 = Integer.parseInt(first);
+                    //System.out.println(num7);
+                    int num8 = Integer.parseInt(second);
+                    //System.out.println(num8);
+                    total_result = toplam4(num7, num8);
+       //             PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+                    out.println("Server:" + total_result);
+                }
+
+
+                //System.out.println("GOOD CHOİCE");
+                else {
+//                    PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+                    out.println("ERROR: (INVALID SYNTAX!) ENTER A VALID MATH SIGN...");
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+//                continue;
+            }
+        }
+
+
+    }
+}
