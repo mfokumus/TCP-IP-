@@ -1,0 +1,73 @@
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+// dosya listesini client da göremiyoruz, liste gözükecek ardından dosya seçimi yapılacak ve içi okunacak. 4.08.2022
+
+public class fileServer {
+
+    public static void main(String[] args) throws IOException {
+
+        System.out.println("Waiting for Clients");
+        ServerSocket ss = new ServerSocket(1233);
+        Socket soc = ss.accept();
+        System.out.println("Connection is established.");
+        File directoryPath = new File("/Users/mf.okumus/Desktop/Tales");
+        String fileList[] = directoryPath.list();
+
+
+        PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+        String sending = "";
+        System.out.println("burda1");
+        for (int i = 0; i < fileList.length; i++) {
+
+            sending += fileList[i]+" ";
+//                    out.println(i+"-"+fileList[i]);
+            System.out.println(i);
+        }
+        out.println(sending);
+
+        while(true) {
+
+            try {
+
+                System.out.println("burda3");
+                BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+                String str = in.readLine();
+                System.out.println(str);
+                if (str != null){
+                    // girilen input fileList in lenght inden küçük mü if ile yap.
+                    int index = Integer.parseInt(str);
+
+                    if(index<fileList.length){
+                        // dosyanın içeriğinbi oku onu stringe ata ve cliente out.println ile bastır.
+                        BufferedReader bf = new BufferedReader(new FileReader("/Users/mf.okumus/Desktop/Tales/"+fileList[index]));
+                        String currentLine ;
+                        String son = "";
+                        while((currentLine = bf.readLine())!=null){
+//                            out.println(currentLine);
+                            son += currentLine ;
+
+                            //System.out.println(currentLine);
+                        }
+                        System.out.println(son);
+                        out.println(son);
+
+                    }
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        }
+    }
+
+
+
+
+
+
